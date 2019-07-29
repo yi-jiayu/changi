@@ -1,4 +1,4 @@
-defmodule Departures.Server do
+defmodule Changi.Server do
   use Plug.Router
 
   plug(Plug.Logger)
@@ -42,7 +42,7 @@ defmodule Departures.Server do
     flight_number = text |> String.upcase() |> String.replace(" ", "")
 
     text =
-      if departure = Departures.Proxy.find(flight_number),
+      if departure = Changi.Proxy.find(flight_number),
         do: Map.get(departure, "status"),
         else: "Not found!"
 

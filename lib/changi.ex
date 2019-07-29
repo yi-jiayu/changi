@@ -1,6 +1,6 @@
-defmodule Departures do
+defmodule Changi do
   @moduledoc """
-  Documentation for Departures.
+  Documentation for Changi.
   """
 
   @doc """
@@ -8,7 +8,7 @@ defmodule Departures do
 
   ## Examples
 
-      iex> Departures.hello()
+      iex> Changi.hello()
       :world
 
   """

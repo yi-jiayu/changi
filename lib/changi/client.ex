@@ -1,4 +1,4 @@
-defmodule Departures.Client do
+defmodule Changi.Client do
   use Tesla
   adapter(Tesla.Adapter.Hackney)
   plug(Tesla.Middleware.BaseUrl, "https://www.changiairport.com")

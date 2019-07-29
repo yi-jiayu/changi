@@ -1,4 +1,4 @@
-defmodule Departures.MixProject do
+defmodule Changi.MixProject do
   use Mix.Project
 
   def project do
@@ -15,7 +15,7 @@ defmodule Departures.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {Departures.Application, []}
+      mod: {Changi.Application, []}
     ]
   end
 

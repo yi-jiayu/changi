@@ -1,6 +1,6 @@
-defmodule Departures.Proxy do
+defmodule Changi.Proxy do
   use Agent
-  alias Departures.Client
+  alias Changi.Client
 
   @ttl 60
 

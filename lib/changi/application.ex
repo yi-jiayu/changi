@@ -1,4 +1,4 @@
-defmodule Departures.Application do
+defmodule Changi.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   @moduledoc false
@@ -7,11 +7,11 @@ defmodule Departures.Application do
 
   def start(_type, _args) do
     children = [
-      Plug.Cowboy.child_spec(scheme: :http, plug: Departures.Router, options: [port: 4001]),
-      Departures.Proxy
+      Plug.Cowboy.child_spec(scheme: :http, plug: Changi.Server, options: [port: 4001]),
+      Changi.Proxy
     ]
 
-    opts = [strategy: :one_for_one, name: Departures.Supervisor]
+    opts = [strategy: :one_for_one, name: Changi.Supervisor]
     Supervisor.start_link(children, opts)
   end
 end
