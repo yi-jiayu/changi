@@ -42,7 +42,7 @@ defmodule Changi.Server do
     flight_number = text |> String.upcase() |> String.replace(" ", "")
 
     text =
-      if departure = Changi.Proxy.find(flight_number),
+      if departure = Changi.DeparturesProxy.find(flight_number),
         do: Map.get(departure, "status"),
         else: "Not found!"
 

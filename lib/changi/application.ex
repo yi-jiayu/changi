@@ -8,7 +8,7 @@ defmodule Changi.Application do
   def start(_type, _args) do
     children = [
       Plug.Cowboy.child_spec(scheme: :http, plug: Changi.Server, options: [port: 4001]),
-      Changi.Proxy
+      Changi.DeparturesProxy
     ]
 
     opts = [strategy: :one_for_one, name: Changi.Supervisor]

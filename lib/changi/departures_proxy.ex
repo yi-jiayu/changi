@@ -1,4 +1,4 @@
-defmodule Changi.Proxy do
+defmodule Changi.DeparturesProxy do
   use Agent
   alias Changi.Client
 

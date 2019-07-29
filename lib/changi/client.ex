@@ -7,8 +7,16 @@ defmodule Changi.Client do
   def get_departures do
     {:ok, resp} = get("/cag-web/flights/departures", query: [lang: "en", date: "today"])
 
-    with %{"success" => true, "carriers" => departures} <- resp.body do
-      departures |> Enum.map(fn d -> {d["flightNo"], d} end) |> Enum.into(%{})
+    with %{"success" => true, "carriers" => carriers} <- resp.body do
+      carriers |> Enum.map(fn c -> {c["flightNo"], c} end) |> Enum.into(%{})
+    end
+  end
+
+  def get_arrivals do
+    {:ok, resp} = get("/cag-web/flights/arrivals", query: [lang: "en", date: "today"])
+
+    with %{"success" => true, "carriers" => carriers} <- resp.body do
+      carriers |> Enum.map(fn c -> {c["flightNo"], c} end) |> Enum.into(%{})
     end
   end
 end
