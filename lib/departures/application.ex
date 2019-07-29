@@ -7,12 +7,9 @@ defmodule Departures.Application do
 
   def start(_type, _args) do
     children = [
-      # Starts a worker by calling: Departures.Worker.start_link(arg)
-      # {Departures.Worker, arg}
+      Plug.Cowboy.child_spec(scheme: :http, plug: Departures.Router, options: [port: 4001])
     ]
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Departures.Supervisor]
     Supervisor.start_link(children, opts)
   end
