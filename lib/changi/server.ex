@@ -47,14 +47,29 @@ defmodule Changi.Server do
       |> Map.get(flight_number)
       |> case do
         nil -> "Not found!"
-        departure -> Map.get(departure, "status")
+        departure -> format_departure(departure)
       end
 
     reply(conn, chat_id, text)
   end
 
+  def format_departure(departure) do
+    """
+    *#{departure["flightNo"]}*
+    #{departure["airlineDesc"]}
+    #{departure["to"]}
+
+    *#{departure["status"]}*
+    #{departure["scheduledDatetime"]}
+
+    T#{departure["terminal"]}
+    Check-in at row #{departure["checkInRow"]}
+    Board at gate #{departure["gate"]}
+    """
+  end
+
   def reply(conn, chat_id, text) do
-    resp = %{method: "sendMessage", chat_id: chat_id, text: text}
+    resp = %{method: "sendMessage", chat_id: chat_id, text: text, parse_mode: "Markdown"}
     json(conn, resp)
   end
 
