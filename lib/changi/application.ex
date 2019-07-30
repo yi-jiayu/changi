@@ -6,8 +6,10 @@ defmodule Changi.Application do
   use Application
 
   def start(_type, _args) do
+    port = Application.get_env(:changi, :port, 4000)
+
     children = [
-      Plug.Cowboy.child_spec(scheme: :http, plug: Changi.Server, options: [port: 4001]),
+      Plug.Cowboy.child_spec(scheme: :http, plug: Changi.Server, options: [port: port]),
       Changi.DeparturesProxy
     ]
 
