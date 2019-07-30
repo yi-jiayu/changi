@@ -1,4 +1,9 @@
 defmodule Changi.DeparturesProxy do
+  @moduledoc """
+  Provides queries on departures. Transparently fetches and caches departure
+  information from the Changi Airport website to reduce API calls.
+  """
+
   use Agent
   alias Changi.Client
 

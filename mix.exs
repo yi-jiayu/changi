@@ -3,7 +3,7 @@ defmodule Changi.MixProject do
 
   def project do
     [
-      app: :departures,
+      app: :changi,
       version: "0.1.0",
       elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
@@ -27,7 +27,8 @@ defmodule Changi.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:jason, "~> 1.1"},
       {:tesla, "~> 1.2.0"},
-      {:hackney, "~> 1.14.0"}
+      {:hackney, "~> 1.14.0"},
+      {:ex_doc, "~> 0.21", only: :dev, runtime: false}
     ]
   end
 end
