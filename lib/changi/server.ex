@@ -1,5 +1,6 @@
 defmodule Changi.Server do
   use Plug.Router
+  alias Changi.DeparturesProxy
 
   plug(Plug.Logger)
 
@@ -42,18 +43,24 @@ defmodule Changi.Server do
     flight_number = text |> String.upcase() |> String.replace(" ", "")
 
     text =
-      if departure = Changi.DeparturesProxy.find(flight_number),
-        do: Map.get(departure, "status"),
-        else: "Not found!"
+      DeparturesProxy.get_departures()
+      |> Map.get(flight_number)
+      |> case do
+        nil -> "Not found!"
+        departure -> Map.get(departure, "status")
+      end
 
     reply(conn, chat_id, text)
   end
 
   def reply(conn, chat_id, text) do
-    body = %{method: "sendMessage", chat_id: chat_id, text: text}
+    resp = %{method: "sendMessage", chat_id: chat_id, text: text}
+    json(conn, resp)
+  end
 
+  def json(conn, data) do
     conn
     |> put_resp_content_type("application/json")
-    |> send_resp(200, Jason.encode!(body))
+    |> send_resp(200, Jason.encode!(data))
   end
 end
