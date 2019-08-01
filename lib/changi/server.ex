@@ -1,6 +1,6 @@
 defmodule Changi.Server do
   use Plug.Router
-  alias Changi.DeparturesProxy
+  alias Changi.Proxy
 
   plug(Plug.Logger)
 
@@ -43,7 +43,7 @@ defmodule Changi.Server do
     flight_number = text |> String.upcase() |> String.replace(" ", "")
 
     text =
-      DeparturesProxy.get_departures()
+      Proxy.get_flights()
       |> Map.get(flight_number)
       |> case do
         nil -> "Not found!"
