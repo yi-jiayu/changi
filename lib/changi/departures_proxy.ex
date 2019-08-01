@@ -11,7 +11,7 @@ defmodule Changi.DeparturesProxy do
 
   def start_link(_opts) do
     Agent.start_link(
-      fn -> {DateTime.utc_now(), Client.get_departures()} end,
+      fn -> {~U[1970-01-01 00:00:00Z], nil} end,
       name: __MODULE__
     )
   end
