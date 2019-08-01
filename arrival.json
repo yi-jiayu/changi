@@ -1,0 +1,48 @@
+{
+  "airportCode": "BKK",
+  "airlineCode": "3K",
+  "airlineDesc": "JETSTAR ASIA",
+  "scheduledTime": "15:10",
+  "estimatedTime": "14:46",
+  "flightNo": "3K520",
+  "terminal": "1",
+  "status": "Confirmed",
+  "statusCode": "CF",
+  "via": [],
+  "slaves": [
+    {
+      "flightNo": "9W4558",
+      "airlineDesc": "JET AIRWAYS",
+      "airlineCode": "9W"
+    },
+    {
+      "flightNo": "AY6371",
+      "airlineDesc": "FINNAIR",
+      "airlineCode": "AY"
+    },
+    {
+      "flightNo": "EK7726",
+      "airlineDesc": "EMIRATES",
+      "airlineCode": "EK"
+    },
+    {
+      "flightNo": "QF5320",
+      "airlineDesc": "QANTAS AIRWAYS",
+      "airlineCode": "QF"
+    },
+    {
+      "flightNo": "UL3266",
+      "airlineDesc": "SRI LANKAN AIRLINES",
+      "airlineCode": "UL"
+    }
+  ],
+  "estimatedDate": "",
+  "scheduledDatetime": "20190730 15:10:00",
+  "estimationDateFlag": false,
+  "estimationTimeFlag": true,
+  "terminalFlag": false,
+  "scheduledTimeRange": "08",
+  "estimatedTimeRange": "08",
+  "from": "Bangkok (Suvarnabhumi)",
+  "belt": "10"
+}

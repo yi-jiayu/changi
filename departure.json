@@ -1,0 +1,50 @@
+{
+  "airportCode": "LHR",
+  "airlineCode": "SQ",
+  "airlineDesc": "SINGAPORE AIRLINES",
+  "scheduledTime": "12:35",
+  "estimatedTime": "12:55",
+  "flightNo": "SQ318",
+  "terminal": "3",
+  "status": "Departed",
+  "statusCode": "DP",
+  "via": [],
+  "slaves": [
+    {
+      "flightNo": "AV6553",
+      "airlineDesc": "Avianca S.A",
+      "airlineCode": "AV"
+    },
+    {
+      "flightNo": "NZ3318",
+      "airlineDesc": "AIR NEW ZEALAND",
+      "airlineCode": "NZ"
+    },
+    {
+      "flightNo": "SK8040",
+      "airlineDesc": "SCANDINIVIAN AIRLINES SYSTEM",
+      "airlineCode": "SK"
+    },
+    {
+      "flightNo": "VA5686",
+      "airlineDesc": "VIRGIN AUSTRALIA",
+      "airlineCode": "VA"
+    },
+    {
+      "flightNo": "VS7971",
+      "airlineDesc": "VIRGIN ATLANTIC AIRWAYS",
+      "airlineCode": "VS"
+    }
+  ],
+  "estimatedDate": "",
+  "scheduledDatetime": "20190730 12:35:00",
+  "estimationDateFlag": false,
+  "estimationTimeFlag": true,
+  "terminalFlag": false,
+  "scheduledTimeRange": "07",
+  "estimatedTimeRange": "07",
+  "to": "London",
+  "checkInRow": "04",
+  "gate": "A14",
+  "differentGate": false
+}
