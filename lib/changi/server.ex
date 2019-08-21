@@ -40,14 +40,14 @@ defmodule Changi.Server do
   end
 
   def send_flight_info(conn, chat_id, text) do
-    flight_number = text |> String.upcase() |> String.replace(" ", "")
+    flight_no = text |> String.upcase() |> String.replace(" ", "")
 
     text =
       Proxy.get_flights()
-      |> Map.get(flight_number)
+      |> Map.get(flight_no)
       |> case do
         nil -> "Not found!"
-        flight -> Changi.format_flight(flight)
+        flight -> Changi.format_flight(flight, flight_no)
       end
 
     reply(conn, chat_id, text)

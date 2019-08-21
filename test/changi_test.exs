@@ -10,7 +10,7 @@ defmodule ChangiTest do
   @departure File.read!("departure.json") |> Jason.decode!()
   describe "format_flight/1" do
     test "format arrival" do
-      assert Changi.format_flight(@arrival) == """
+      assert Changi.format_flight(@arrival, "3K520") == """
              *3K520*
              JETSTAR ASIA
              Arriving from Bangkok (Suvarnabhumi)
@@ -24,9 +24,25 @@ defmodule ChangiTest do
     end
 
     test "format departure" do
-      assert Changi.format_flight(@departure) == """
+      assert Changi.format_flight(@departure, "SQ318") == """
              *SQ318*
              SINGAPORE AIRLINES
+             Destination: London
+             Scheduled time: 20190730 12:35:00
+
+             Status: *Departed*
+
+             T3
+             Check-in at row 04
+             Board at gate A14
+             """
+    end
+
+    test "codeshare flight" do
+      assert Changi.format_flight(@departure, "NZ3318") == """
+             *NZ3318*
+             AIR NEW ZEALAND
+             Operated by: SINGAPORE AIRLINES SQ318
              Destination: London
              Scheduled time: 20190730 12:35:00
 

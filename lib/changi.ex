@@ -3,6 +3,7 @@ defmodule Changi do
   Documentation for Changi.
   """
 
+  require EEx
   alias Changi.Client
 
   @doc """
@@ -24,32 +25,43 @@ defmodule Changi do
     Map.merge(Task.await(arrivals), Task.await(departures))
   end
 
-  def format_flight(%{"to" => _} = departure) do
-    """
-    *#{departure["flightNo"]}*
-    #{departure["airlineDesc"]}
-    Destination: #{departure["to"]}
-    Scheduled time: #{departure["scheduledDatetime"]}
+  EEx.function_from_file(
+    :defp,
+    :departure_template,
+    Application.app_dir(:changi, "priv/departure.eex"),
+    [:assigns]
+  )
 
-    Status: *#{departure["status"]}*
+  def format_flight(%{"to" => _} = flight, flight_no) do
+    if flight_no == flight["flightNo"] do
+      departure_template(flight: flight, flight_no: nil, airline_desc: nil)
+    else
+      airline_desc =
+        flight["slaves"]
+        |> Enum.find(fn s -> s["flightNo"] == flight_no end)
+        |> Map.get("airlineDesc")
 
-    T#{departure["terminal"]}
-    Check-in at row #{departure["checkInRow"]}
-    Board at gate #{departure["gate"]}
-    """
+      departure_template(flight: flight, flight_no: flight_no, airline_desc: airline_desc)
+    end
   end
 
-  def format_flight(%{"from" => _} = arrival) do
-    """
-    *#{arrival["flightNo"]}*
-    #{arrival["airlineDesc"]}
-    Arriving from #{arrival["from"]}
-    Scheduled time: #{arrival["scheduledDatetime"]}
+  EEx.function_from_file(
+    :defp,
+    :arrival_template,
+    Application.app_dir(:changi, "priv/arrival.eex"),
+    [:assigns]
+  )
 
-    Status: *#{arrival["status"]}*
+  def format_flight(%{"from" => _} = flight, flight_no) do
+    if flight_no == flight["flightNo"] do
+      arrival_template(flight: flight, flight_no: nil, airline_desc: nil)
+    else
+      airline_desc =
+        flight["slaves"]
+        |> Enum.find(fn s -> s["flightNo"] == flight_no end)
+        |> Map.get("airlineDesc")
 
-    T#{arrival["terminal"]}
-    Luggage at belt #{arrival["belt"]}
-    """
+      arrival_template(flight: flight, flight_no: flight_no, airline_desc: airline_desc)
+    end
   end
 end

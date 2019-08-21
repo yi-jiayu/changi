@@ -1,0 +1,11 @@
+*<%= @flight_no || @flight["flightNo"] %>*
+<%= @airline_desc || @flight["airlineDesc"] %>
+<%= if @flight_no do %>Operated by: <%= @flight["airlineDesc"] %> <%= @flight["flightNo"] %>
+<% end %>Destination: <%= @flight["to"] %>
+Scheduled time: <%= @flight["scheduledDatetime"] %>
+
+Status: *<%= @flight["status"] %>*
+
+T<%= @flight["terminal"] %>
+Check-in at row <%= @flight["checkInRow"] %>
+Board at gate <%= @flight["gate"] %>
