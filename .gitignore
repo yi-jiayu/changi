@@ -25,3 +25,6 @@ changi-*.tar
 # IDE files
 .idea
 *.iml
+
+# Terraform files
+.terraform
