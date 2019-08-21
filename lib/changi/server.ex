@@ -28,7 +28,7 @@ defmodule Changi.Server do
         },
         "update_id" => _
       } ->
-        send_departure_info(conn, chat_id, text)
+        send_flight_info(conn, chat_id, text)
 
       _ ->
         send_resp(conn, :ok, "")
@@ -39,7 +39,7 @@ defmodule Changi.Server do
     send_resp(conn, :not_found, "")
   end
 
-  def send_departure_info(conn, chat_id, text) do
+  def send_flight_info(conn, chat_id, text) do
     flight_number = text |> String.upcase() |> String.replace(" ", "")
 
     text =
@@ -47,7 +47,7 @@ defmodule Changi.Server do
       |> Map.get(flight_number)
       |> case do
         nil -> "Not found!"
-        departure -> Changi.format_flight(departure)
+        flight -> Changi.format_flight(flight)
       end
 
     reply(conn, chat_id, text)
