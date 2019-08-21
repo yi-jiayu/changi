@@ -8,6 +8,11 @@ terraform {
   }
 }
 
+variable "app_name" {
+  type    = string
+  default = "changi"
+}
+
 variable "image" {
   type    = string
   default = "gcr.io/infra-248610/github.com/yi-jiayu/changi@sha256:c90c93fc651be1456f86b9eff8fd6d7c442e0bbb48bffffd420befe9a771e73e"
@@ -16,6 +21,10 @@ variable "image" {
 resource "kubernetes_ingress" "changi" {
   metadata {
     name = "changi"
+
+    labels = {
+      app = var.app_name
+    }
 
     annotations = {
       "kubernetes.io/ingress.class" = "traefik"
@@ -43,7 +52,7 @@ resource "kubernetes_service" "changi" {
     name = "changi"
 
     labels = {
-      app = kubernetes_deployment.changi.metadata.0.labels.app
+      app = var.app_name
     }
   }
 
@@ -55,7 +64,7 @@ resource "kubernetes_service" "changi" {
     }
 
     selector = {
-      app = "changi"
+      app = var.app_name
     }
   }
 }
@@ -66,7 +75,7 @@ resource "kubernetes_deployment" "changi" {
     namespace = "default"
 
     labels = {
-      app = "changi"
+      app = var.app_name
     }
   }
 
@@ -75,14 +84,14 @@ resource "kubernetes_deployment" "changi" {
 
     selector {
       match_labels = {
-        app = "changi"
+        app = var.app_name
       }
     }
 
     template {
       metadata {
         labels = {
-          app = "changi"
+          app = var.app_name
         }
       }
 
