@@ -7,5 +7,5 @@ Scheduled time: <%= @flight["scheduledDatetime"] %>
 Status: *<%= @flight["status"] %>*
 
 T<%= @flight["terminal"] %>
-Check-in at row <%= @flight["checkInRow"] %>
+Check-in at row <%= @flight["checkInRow"] %> (door <%= @door %>)
 Board at gate <%= @flight["gate"] %>

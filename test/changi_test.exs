@@ -33,7 +33,7 @@ defmodule ChangiTest do
              Status: *Departed*
 
              T3
-             Check-in at row 04
+             Check-in at row 04 (door 3)
              Board at gate A14
              """
     end
@@ -49,7 +49,7 @@ defmodule ChangiTest do
              Status: *Departed*
 
              T3
-             Check-in at row 04
+             Check-in at row 04 (door 3)
              Board at gate A14
              """
     end

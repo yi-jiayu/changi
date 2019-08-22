@@ -33,15 +33,22 @@ defmodule Changi do
   )
 
   def format_flight(%{"to" => _} = flight, flight_no) do
+    door = Changi.Doors.door_for(flight)
+
     if flight_no == flight["flightNo"] do
-      departure_template(flight: flight, flight_no: nil, airline_desc: nil)
+      departure_template(flight: flight, flight_no: nil, airline_desc: nil, door: door)
     else
       airline_desc =
         flight["slaves"]
         |> Enum.find(fn s -> s["flightNo"] == flight_no end)
         |> Map.get("airlineDesc")
 
-      departure_template(flight: flight, flight_no: flight_no, airline_desc: airline_desc)
+      departure_template(
+        flight: flight,
+        flight_no: flight_no,
+        airline_desc: airline_desc,
+        door: door
+      )
     end
   end
 
