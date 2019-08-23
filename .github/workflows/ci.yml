@@ -8,59 +8,62 @@ jobs:
     container:
       image: elixir:1.9.1-slim
     steps:
-    - uses: actions/checkout@v1
-    - name: Install Dependencies
-      run: |
-        mix local.rebar --force
-        mix local.hex --force
-        mix deps.get
-    - name: Run Tests
-      run: mix test
+      - uses: actions/checkout@v1
+      - name: Install Dependencies
+        run: |
+          mix local.rebar --force
+          mix local.hex --force
+          mix deps.get
+      - name: Run Tests
+        run: mix test
 
   build:
     needs: test
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: Build image
-      uses: actions/docker/cli@master
-      with:
-        args: "build -t jiayuyi/changi ."
-    - name: Tag image
-      uses: actions/docker/cli@master
-      with:
-        args: "tag jiayuyi/changi jiayuyi/changi:${{ github.sha }}"
-    - name: "Login to Docker Hub"
-      uses: actions/docker/login@master
-      env:
-        DOCKER_USERNAME: jiayuyi
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-    - name: Push image to Docker Hub (latest)
-      uses: actions/docker/cli@master
-      with:
-        args: "push jiayuyi/changi"
-    - name: Push image to Docker Hub (commit SHA)
-      uses: actions/docker/cli@master
-      with:
-        args: "push jiayuyi/changi:${{ github.sha }}"
+      - uses: actions/checkout@v1
+      - name: Build image
+        uses: actions/docker/cli@master
+        with:
+          args: "build -t changi ."
+      - name: Tag image
+        uses: actions/docker/cli@master
+        with:
+          args: "tag changi asia.gcr.io/${{ secrets.GCLOUD_PROJECT }}/github.com/yi-jiayu/changi:${{ github.sha }}"
+      - name: Setup Google Cloud SDK
+        uses: "actions/gcloud/auth@master"
+        env:
+          GCLOUD_AUTH: ${{ secrets.GCLOUD_AUTH }}
+      - name: Update Google Cloud SDK components
+        uses: "actions/gcloud/cli@master"
+        with:
+          args: "--quiet components update"
+      - name: Authenticate to Container Registry
+        uses: "actions/gcloud/cli@master"
+        with:
+          args: "--quiet auth configure-docker"
+      - name: Push image to Container Registry
+        uses: actions/docker/cli@master
+        with:
+          args: "push asia.gcr.io/${{ secrets.GCLOUD_PROJECT }}/github.com/yi-jiayu/changi:${{ github.sha }}"
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
-    - name: Setup Google Cloud SDK
-      uses: "actions/gcloud/auth@master"
-      env:
-        GCLOUD_AUTH: ${{ secrets.GCLOUD_AUTH }}
-    - name: Install Google Cloud SDK components
-      uses: "actions/gcloud/cli@master"
-      with:
-        args: "--quiet components install beta"
-    - name: Update Google Cloud SDK components
-      uses: "actions/gcloud/cli@master"
-      with:
-        args: "--quiet components update"
-    - name: Deploy new container image
-      uses: "actions/gcloud/cli@master"
-      with:
-        args: "--quiet --project ${{ secrets.GCLOUD_PROJECT }} beta run deploy changi --image jiayuyi/changi:${{ github.sha }}"
+      - name: Setup Google Cloud SDK
+        uses: "actions/gcloud/auth@master"
+        env:
+          GCLOUD_AUTH: ${{ secrets.GCLOUD_AUTH }}
+      - name: Install Google Cloud SDK components
+        uses: "actions/gcloud/cli@master"
+        with:
+          args: "--quiet components install beta"
+      - name: Update Google Cloud SDK components
+        uses: "actions/gcloud/cli@master"
+        with:
+          args: "--quiet components update"
+      - name: Deploy new container image
+        uses: "actions/gcloud/cli@master"
+        with:
+          args: "--quiet --project ${{ secrets.GCLOUD_PROJECT }} beta run deploy changi --image asia.gcr.io/${{ secrets.GCLOUD_PROJECT }}/github.com/yi-jiayu/changi:${{ github.sha }} --platform managed --region asia-northeast1"
