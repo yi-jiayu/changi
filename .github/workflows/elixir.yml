@@ -21,15 +21,14 @@ jobs:
       run: mix test
     - name: Build image
       uses: actions/docker/cli@master
-      args: "build -t changi ."
-    - name: Tag image
-      uses: actions/docker/tag@master
-      args: "changi jiayuyi/changi"
+      with:
+        args: "build -t changi ."
     - name: Login to Docker Hub
       uses: actions/docker/login@master
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
     - name: Push to Docker Hub
-      uses: actions/docker/cli@master
-      args: "push jiayuyi/changi"
+      uses: actions/docker/cli-multi@master
+      with:
+        args: ["tag changi jiayuyi/changi:${{ github.sha }}", "push jiayuyi/changi:${{ github.sha }}"]
