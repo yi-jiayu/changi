@@ -20,5 +20,5 @@ steps:
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['beta', 'run', 'deploy', 'changi', '--image', 'asia.gcr.io/$PROJECT_ID/github.com/yi-jiayu/changi:$SHORT_SHA', '--region', 'asia-northeast1', '--platform', 'managed']
 
-- images:
-    - 'asia.gcr.io/$PROJECT_ID/github.com/yi-jiayu/changi:$SHORT_SHA'
+images:
+  - 'asia.gcr.io/$PROJECT_ID/github.com/yi-jiayu/changi:$SHORT_SHA'
