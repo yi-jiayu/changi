@@ -36,7 +36,6 @@ jobs:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
     - name: Push image to Docker Hub (latest)
       uses: actions/docker/cli@master
-      needs: "Login to Docker Hub"
       with:
         args: "push jiayuyi/changi"
     - name: Push image to Docker Hub (commit SHA)
