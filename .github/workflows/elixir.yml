@@ -55,12 +55,12 @@ jobs:
     - name: Install Google Cloud SDK components
       uses: "actions/gcloud/cli@master"
       with:
-        args: "-q components install beta"
+        args: "--quiet components install beta"
     - name: Update Google Cloud SDK components
       uses: "actions/gcloud/cli@master"
       with:
-        args: "-q components update"
+        args: "--quiet components update"
     - name: Deploy new container image
       uses: "actions/gcloud/cli@master"
       with:
-        args: "-q beta run deploy changi --image jiayuyi/changi:${{ github.sha }}"
+        args: "--quiet --project ${{ secrets.GCLOUD_PROJECT }} beta run deploy changi --image jiayuyi/changi:${{ github.sha }}"
