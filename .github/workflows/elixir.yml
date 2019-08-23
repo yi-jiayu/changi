@@ -3,13 +3,10 @@ name: Elixir CI
 on: push
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
-
     container:
       image: elixir:1.9.1-slim
-
     steps:
     - uses: actions/checkout@v1
     - name: Install Dependencies
@@ -19,6 +16,11 @@ jobs:
         mix deps.get
     - name: Run Tests
       run: mix test
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
     - name: Build image
       uses: actions/docker/cli@master
       with:
@@ -27,16 +29,38 @@ jobs:
       uses: actions/docker/cli@master
       with:
         args: "tag jiayuyi/changi jiayuyi/changi:${{ github.sha }}"
-    - name: Login to Docker Hub
+    - name: "Login to Docker Hub"
       uses: actions/docker/login@master
       env:
         DOCKER_USERNAME: jiayuyi
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
     - name: Push image to Docker Hub (latest)
       uses: actions/docker/cli@master
+      needs: "Login to Docker Hub"
       with:
         args: "push jiayuyi/changi"
-    - name: Push image to Docker Hub (SHA)
+    - name: Push image to Docker Hub (commit SHA)
       uses: actions/docker/cli@master
       with:
         args: "push jiayuyi/changi:${{ github.sha }}"
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Setup Google Cloud SDK
+      uses: "actions/gcloud/auth@master"
+      env:
+        GCLOUD_AUTH: ${{ secrets.GCLOUD_AUTH }}
+    - name: Install Google Cloud SDK components
+      uses: "actions/gcloud/cli@master"
+      with:
+        args: "-q components install beta"
+    - name: Update Google Cloud SDK components
+      uses: "actions/gcloud/cli@master"
+      with:
+        args: "-q components update"
+    - name: Deploy new container image
+      uses: "actions/gcloud/cli@master"
+      with:
+        args: "-q beta run deploy changi --image jiayuyi/changi:${{ github.sha }}"
