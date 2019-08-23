@@ -1,0 +1,21 @@
+steps:
+  # unit tests
+  - name: 'elixir:1.9.1-slim'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        mix local.rebar --force \
+        && mix local.hex --force \
+        && mix deps.get \
+        && mix test
+
+  # build and push image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'asia.gcr.io/$PROJECT_ID/github.com/yi-jiayu/changi:$SHORT_SHA', '.']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'asia.gcr.io/$PROJECT_ID/github.com/yi-jiayu/changi:$SHORT_SHA']
+
+  # deploy to cloud run
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['beta', 'run', 'deploy', 'changi', '--image', 'asia.gcr.io/$PROJECT_ID/github.com/yi-jiayu/changi:$SHORT_SHA', '--region', 'asia-northeast1', '--platform', 'managed']
