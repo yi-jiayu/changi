@@ -22,17 +22,21 @@ jobs:
     - name: Build image
       uses: actions/docker/cli@master
       with:
-        args: "build -t changi ."
+        args: "build -t jiayuyi/changi ."
     - name: Tag image
       uses: actions/docker/cli@master
       with:
-        args: "tag changi jiayuyi/changi:${{ github.sha }}"
+        args: "tag jiayuyi/changi jiayuyi/changi:${{ github.sha }}"
     - name: Login to Docker Hub
       uses: actions/docker/login@master
       env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_USERNAME: jiayuyi
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-    - name: Push image to Docker Hub
+    - name: Push image to Docker Hub (latest)
+      uses: actions/docker/cli@master
+      with:
+        args: "push jiayuyi/changi"
+    - name: Push image to Docker Hub (SHA)
       uses: actions/docker/cli@master
       with:
         args: "push jiayuyi/changi:${{ github.sha }}"
